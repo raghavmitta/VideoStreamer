@@ -1,13 +1,13 @@
 package repo
 
 import (
-	"VideoStreamer/config"
+	"VideoStreamer/db"
 	"database/sql"
 	"log"
 )
 
 func SearchData(key string) *sql.Rows {
-	db := config.ConnectDB()
+	db := db.ConnectDB()
 	key = "%" + key + "%"
 	results, err := db.Query("SELECT * FROM testdb.video where ((title like ?) or (description like ?)) order by published_at desc;", key, key)
 	if err != nil {

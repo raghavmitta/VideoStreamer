@@ -1,0 +1,11 @@
+server:
+  port: 8080
+database:
+  driver_name: mysql
+  host_name: root:Moto@688729@tcp(127.0.0.1:3306)
+  db_name: testDb
+pagination:
+  page_size: 10
+ticker:
+  time: 10
+api_keys: 1029
