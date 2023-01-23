@@ -31,3 +31,20 @@ func GetPaginated(results *sql.Rows) []model.Page {
 	}
 	return pages
 }
+func PaginatedSearch(keys []string, videoIdMapper map[string]model.Video) []model.Page {
+	var pages []model.Page = make([]model.Page, 0, 10)
+	var pageNo int = 0
+	tempPage := model.NewPage(pageNo, 10)
+	for _, key := range keys {
+		tempPage.Results = append(tempPage.Results, videoIdMapper[key])
+		if len(tempPage.Results) == tempPage.Size {
+			pages = append(pages, *tempPage)
+			pageNo++
+			tempPage = model.NewPage(pageNo, 10)
+		}
+	}
+	if len(tempPage.Results) != 0 {
+		pages = append(pages, *tempPage)
+	}
+	return pages
+}
