@@ -1,8 +1,10 @@
 package main
 
-import "VideoStreamer/config"
+import (
+	"VideoStreamer/service"
+)
 
 func main() {
-	config.ConnectDB() //connect to mysql db
+	service.StartService(60)
 
 }
