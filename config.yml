@@ -7,5 +7,7 @@ database:
 pagination:
   page_size: 10
 ticker:
-  time: 10
-api_keys: 1029
+  time: 1
+api:
+  keys: [AIzaSyAwcp16qimeqGJ2LdfmjpevUc3voIGLIuw,AIzaSyA1q2z3Ce3O6Df0xAng-DPs7lc9ZJrTPtk]
+  query: tutorial

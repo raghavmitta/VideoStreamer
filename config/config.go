@@ -24,7 +24,10 @@ type Config struct {
 	Ticker struct {
 		Time time.Duration `yaml:"time"`
 	}
-	Api struct{}
+	Api struct {
+		Keys  []string `yaml:"keys"`
+		Query string   `yaml:"query"`
+	}
 }
 
 func LoadConfig(configPath string) {

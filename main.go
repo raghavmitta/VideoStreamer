@@ -10,7 +10,7 @@ import (
 func main() {
 	config.LoadConfig("./config.yml")
 	db.Initialize()
-	service.StartService(config.GetConfig().Ticker.Time)
+	go service.StartService(config.GetConfig().Ticker.Time)
 	handler.Handle()
 
 }
