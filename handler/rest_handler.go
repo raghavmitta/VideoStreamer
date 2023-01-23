@@ -7,5 +7,7 @@ import (
 
 func Handle() {
 	myRouter := mux.NewRouter().StrictSlash(true)
-	myRouter.HandleFunc("/all", router.GetAllVideos) //endPoint to fetch all data
+	myRouter.HandleFunc("/all", router.GetAllVideos)
+	myRouter.HandleFunc("/search/{query}", router.SearchResult) //endPoint to search data with given query
+
 }
