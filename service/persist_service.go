@@ -54,7 +54,7 @@ func createService(key string) *youtube.Service {
 }
 
 func searchByKey(service *youtube.SearchService) {
-	//call to Youtube  API with query:tutorial, orderby Date,language:English,publishAfter:given time
+	//call to Youtube  API with query:tutorial, order by Date,language:English,publishAfter:given time
 	call := service.List([]string{"snippet"}).MaxResults(50).Q(config.GetConfig().Api.Query).Order("date").Type("video").RelevanceLanguage("en").PublishedAfter(publisherTime)
 	response, err := call.Do()
 	if err != nil {
@@ -66,14 +66,18 @@ func searchByKey(service *youtube.SearchService) {
 		publisherTime = time.Now().Format(time.RFC3339) //Update publish time to fetch latest result in last call
 	}
 	if response.PageInfo.ResultsPerPage > 0 {
-		log.Println("Adding ", response.PageInfo.ResultsPerPage, " new results to db")
+		log.Println("Adding", response.PageInfo.ResultsPerPage, "new results to db")
 	}
 	//log.Println("No. of new Result fetch" + string(response.PageInfo.ResultsPerPage))
+	var insertCount int = 0
 	for _, item := range response.Items {
 		//save data to db
-		repo.InsertData(item)
+		if repo.InsertData(item) {
+			insertCount++
+		}
 
 	}
+	log.Println(insertCount, "Records inserted in db")
 
 	return
 }

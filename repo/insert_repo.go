@@ -8,18 +8,16 @@ import (
 	"time"
 )
 
-func InsertData(result *youtube.SearchResult) {
+func InsertData(result *youtube.SearchResult) bool {
 	insertQuery := "REPLACE INTO video VALUES ( ?,?,?,?,?,?,?)"
 	db := db.ConnectDB()
 	_, err := db.Exec(insertQuery, result.Id.VideoId, timeParser(result.Snippet.PublishedAt), result.Snippet.Title, result.Snippet.Description, result.Snippet.Thumbnails.Default.Url, result.Snippet.Thumbnails.Medium.Url, result.Snippet.Thumbnails.High.Url)
 	if err != nil {
 		log.Println(err.Error())
-		return
-	} else {
-		log.Println("Recorded with VideoID: ", result.Id.VideoId, " inserted")
+		return false
 	}
 	defer db.Close()
-	return
+	return true
 
 }
 

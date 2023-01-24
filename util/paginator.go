@@ -19,8 +19,8 @@ func GetResult(results *sql.Rows) model.Video { // converts sql data into Video 
 }
 func GetPaginated(results *sql.Rows) []model.Page {
 	pageSize = config.GetConfig().Pagination.PageSize
-	var pages []model.Page = make([]model.Page, 0, pageSize) //initial no.of pages=10
-	var pageNo int = 0
+	var pages = make([]model.Page, 0, pageSize) //initial no.of pages=10
+	var pageNo = 0
 	tempPage := model.NewPage(pageNo, pageSize) //pageSize=10
 	for results.Next() {
 		tempPage.Results = append(tempPage.Results, GetResult(results))
@@ -37,8 +37,8 @@ func GetPaginated(results *sql.Rows) []model.Page {
 }
 func PaginatedSearch(keys []string, videoIdMapper map[string]model.Video) []model.Page {
 	pageSize = config.GetConfig().Pagination.PageSize
-	var pages []model.Page = make([]model.Page, 0, pageSize)
-	var pageNo int = 0
+	var pages = make([]model.Page, 0, pageSize)
+	var pageNo = 0
 	tempPage := model.NewPage(pageNo, pageSize)
 	for _, key := range keys {
 		tempPage.Results = append(tempPage.Results, videoIdMapper[key])
