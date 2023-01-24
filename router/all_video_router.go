@@ -8,12 +8,11 @@ import (
 )
 
 func GetAllVideos(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
 	pages := service.GetAllData()
 	log.Println("Getting all the videos")
-	if len(pages) == 0 {
+	if pages == nil || len(pages) == 0 {
 		log.Println("No result found")
-		w.WriteHeader(http.StatusNoContent)
+		http.NotFound(w, r)
 	} else {
 		json.NewEncoder(w).Encode(pages)
 	}

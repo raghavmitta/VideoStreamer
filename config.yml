@@ -1,13 +1,13 @@
 server:
-  port: 8080
+  port: 8081
 database:
   driver_name: mysql
-  host_name: root:Moto@688729@tcp(127.0.0.1:3306)
-  db_name: testDb
+  host_name: root:password@tcp(db:3306)
+  db_name: test
 pagination:
   page_size: 10
 ticker:
-  time: 1
+  time: 60
 api:
-  keys: [AIzaSyAwcp16qimeqGJ2LdfmjpevUc3voIGLIuw,AIzaSyA1q2z3Ce3O6Df0xAng-DPs7lc9ZJrTPtk]
+  keys: [AIzaSyCFeXxK-TB8RqZOUMwgzO8ycypup923ksM,AIzaSyD2jfy-DKfvOHQepnuaj9w2MLkUn8hYqUY,AIzaSyAwcp16qimeqGJ2LdfmjpevUc3voIGLIuw,AIzaSyA1q2z3Ce3O6Df0xAng-DPs7lc9ZJrTPtk]
   query: tutorial

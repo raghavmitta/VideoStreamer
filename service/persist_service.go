@@ -19,6 +19,7 @@ func StartService(duration time.Duration) {
 	keys = config.GetConfig().Api.Keys
 	ticker := time.NewTicker(duration * time.Second)                    //initialize ticker for async update
 	publisherTime = time.Now().Add(-1 * time.Hour).Format(time.RFC3339) //fetching results after currentTime-1hour
+	go multipleKeySupport()
 	for _ = range ticker.C {
 		if len(keys) <= currentKeyIndex {
 			log.Println("Stopping ticker,all the keys exhausted ")
@@ -69,11 +70,8 @@ func searchByKey(service *youtube.SearchService) {
 	}
 	//log.Println("No. of new Result fetch" + string(response.PageInfo.ResultsPerPage))
 	for _, item := range response.Items {
-		switch item.Id.Kind {
-		case "youtube#video":
-			//save data to db
-			repo.InsertData(item)
-		}
+		//save data to db
+		repo.InsertData(item)
 
 	}
 

@@ -16,7 +16,7 @@ func InsertData(result *youtube.SearchResult) {
 		log.Println(err.Error())
 		return
 	} else {
-		//log.Println("Recorded with VideoID: {} inserted", result.Id)
+		log.Println("Recorded with VideoID: ", result.Id.VideoId, " inserted")
 	}
 	defer db.Close()
 	return

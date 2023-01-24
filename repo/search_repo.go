@@ -9,7 +9,7 @@ import (
 func SearchData(key string) *sql.Rows {
 	db := db.ConnectDB()
 	key = "%" + key + "%"
-	results, err := db.Query("SELECT * FROM testdb.video where ((title like ?) or (description like ?)) order by published_at desc;", key, key)
+	results, err := db.Query("SELECT * FROM video where ((title like ?) or (description like ?)) order by published_at desc;", key, key)
 	if err != nil {
 		log.Println(err.Error())
 		return nil

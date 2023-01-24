@@ -3,6 +3,7 @@ package db
 import (
 	"VideoStreamer/config"
 	"database/sql"
+	"fmt"
 	"log"
 )
 
@@ -22,33 +23,23 @@ func ConnectDB() *sql.DB {
 
 func Initialize() {
 	ConnectDB()
-	_, err := db.Exec("CREATE DATABASE IF NOT EXISTS " + configVar.Database.DbName)
-	if err != nil {
-		log.Fatalln(err.Error())
-		return
-	} else {
-		log.Println("Successfully created database..")
+	queries := []string{
+		"CREATE DATABASE IF NOT EXISTS " + configVar.Database.DbName,
+		"USE " + configVar.Database.DbName,
+		"CREATE TABLE IF NOT EXISTS video(video_id varchar(30) NOT NULL, published_at timestamp, title  varchar(120),description  varchar(300),defaultThumbnail  varchar(60),mediumThumbnail  varchar(60),highThumbnail varchar(60), PRIMARY KEY (video_id),INDEX (title,description))"}
+	fmt.Print(queries[1])
+	for _, query := range queries {
+		_, err := db.Query(query)
+		handleError(err)
 	}
-	_, err = db.Exec("USE " + configVar.Database.DbName)
-	if err != nil {
-		log.Fatalln(err.Error())
-		return
-	}
-	log.Println("DB selected successfully..")
-	stmt, err := db.Prepare("CREATE TABLE IF NOT EXISTS video(video_id varchar(30) NOT NULL, published_at timestamp, title  varchar(120),description  varchar(300),defaultThumbnail  varchar(60),mediumThumbnail  varchar(60),highThumbnail varchar(60), PRIMARY KEY (video_id));")
-	if err != nil {
-		log.Fatalln(err.Error())
-		return
-	}
-
-	_, err = stmt.Exec()
-	if err != nil {
-		log.Fatalln(err.Error())
-	} else {
-		log.Println("Table created successfully..")
-		return
-	}
+	log.Println("Database successfully initialised")
 	defer db.Close()
 	return
+
+}
+func handleError(err error) {
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
 
 }

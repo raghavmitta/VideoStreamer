@@ -7,7 +7,7 @@ import (
 	"fmt"
 )
 
-var configVar = config.GetConfig()
+var pageSize int
 
 func GetResult(results *sql.Rows) model.Video { // converts sql data into Video model
 	var video model.Video
@@ -18,15 +18,16 @@ func GetResult(results *sql.Rows) model.Video { // converts sql data into Video 
 	return video
 }
 func GetPaginated(results *sql.Rows) []model.Page {
-	var pages []model.Page = make([]model.Page, 0, configVar.Pagination.PageSize) //initial no.of pages=10
+	pageSize = config.GetConfig().Pagination.PageSize
+	var pages []model.Page = make([]model.Page, 0, pageSize) //initial no.of pages=10
 	var pageNo int = 0
-	tempPage := model.NewPage(pageNo, configVar.Pagination.PageSize) //pageSize=10
+	tempPage := model.NewPage(pageNo, pageSize) //pageSize=10
 	for results.Next() {
 		tempPage.Results = append(tempPage.Results, GetResult(results))
 		if len(tempPage.Results) == tempPage.Size {
-			pages = append(pages, *tempPage)                                //save current page in pages
-			pageNo++                                                        // increase page
-			tempPage = model.NewPage(pageNo, configVar.Pagination.PageSize) //create new page for left data
+			pages = append(pages, *tempPage)           //save current page in pages
+			pageNo++                                   // increase page
+			tempPage = model.NewPage(pageNo, pageSize) //create new page for left data
 		}
 	}
 	if len(tempPage.Results) != 0 {
@@ -35,15 +36,16 @@ func GetPaginated(results *sql.Rows) []model.Page {
 	return pages
 }
 func PaginatedSearch(keys []string, videoIdMapper map[string]model.Video) []model.Page {
-	var pages []model.Page = make([]model.Page, 0, configVar.Pagination.PageSize)
+	pageSize = config.GetConfig().Pagination.PageSize
+	var pages []model.Page = make([]model.Page, 0, pageSize)
 	var pageNo int = 0
-	tempPage := model.NewPage(pageNo, configVar.Pagination.PageSize)
+	tempPage := model.NewPage(pageNo, pageSize)
 	for _, key := range keys {
 		tempPage.Results = append(tempPage.Results, videoIdMapper[key])
 		if len(tempPage.Results) == tempPage.Size {
 			pages = append(pages, *tempPage)
 			pageNo++
-			tempPage = model.NewPage(pageNo, configVar.Pagination.PageSize)
+			tempPage = model.NewPage(pageNo, pageSize)
 		}
 	}
 	if len(tempPage.Results) != 0 {
